@@ -15,7 +15,7 @@ class Game(object):
         while True:
             self.round_game()
 
-    def round_game(self):
+    def round_game(self):  # FIXME
         for player in self.players:
             pass
 
