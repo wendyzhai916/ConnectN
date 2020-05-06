@@ -9,9 +9,9 @@ class Board(object):
         self.empty_char = char
 
         self.board_array = []
-        for j in range(row):
+        for j in range(self.row):
             cur_row = []
-            for i in range(col):
+            for i in range(self.col):
                 cur_row.append(self.empty_char)
             self.board_array.append(cur_row)
 
@@ -60,6 +60,7 @@ class Board(object):
         i = i.rstrip()
         return i
 
+
     def drop(self, col, letter): # drops character into board
         top = 0
         rownum = 0
@@ -67,6 +68,4 @@ class Board(object):
             if(row[col]==self.empty_char):
                 top = rownum
             rownum = rownum + 1
-        #print("rownum:" + str(rownum))
-        #print("col:"+str(col))
         self.board_array[top][col] = letter
