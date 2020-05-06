@@ -1,6 +1,8 @@
 from typing import List
 from .player import Player
 from .board import Board
+from . import player
+from . import board
 
 
 class Game(object):
@@ -10,6 +12,12 @@ class Game(object):
         self.players: List[Player] = []
         self.board: Board = None
         self.configFile = file_name
+        self.empty_char = None
+        self.num_rows = None
+        self.num_cols = None
+        self.win_pieces = None
+
+        self.play_game()
 
     def play_game(self):
         """
@@ -36,105 +44,129 @@ class Game(object):
         4) use the input in the drop method (in board class) to modify the board
         """
         col = None
+
         while True:
+
             try:
                 col = int(input("{}, please enter the column you want to play in: ".format(name)))
+
                 if col >= self.board.col or col < 0:  # FIXME: col in the board class
                     raise ValueError("That is not a valid column.")
+
             except TypeError:
                 print("{}, column needs to be an integer. {} is not an integer. ".format(name, col))
                 continue
+
             except ValueError:
                 continue
+
             else:
                 break
 
-        self.board.drop(col,"-")
-
-        # FIXME: create drop method
-        # TODO: modify the board to drop the object
-        # maybe create drop_col in the board class? <- probably this depends on how the board class turns out
+        self.board.drop(col,)
 
 
     def print_cur_board(self):
-        print(repr(self.board))  # TODO: the create (or just use the one from hw2) method in board class
+        print(repr(self.board))
 
 
     def create_board(self):
-        # TODO: take information from the config file to create board
 
-        #print("Config file: " + self.configFile);
+        with open(self.configFile) as file:
+            line = file.readline()
 
-        with open(self.configFile) as fp:
-            line = fp.readline()
-            count = 1
             while line:
-                #print("Line {}: {}".format(count, line.strip()))
-                line = fp.readline()
-                count += 1
+                if line.startswith("num_rows"):
+                    self.num_rows = int(line[-2])
 
-        self.board = Board(5 ,5 ,"*")
+                elif line.startswith("num_cols"):
+                    self.num_cols = int(line[-2])
+
+                elif line.startswith("blank_char"):
+                    self.empty_char = line[-2]
+
+                elif line.startswith("num_pieces_to_win"):
+                    self.win_pieces = int(line[-2])
+
+                line = file.readline()
+
+        self.board = Board(self.num_rows ,self.num_cols ,self.empty_char)
 
 
     def create_players(self):
         """
         get num_player amount of players appended into the players list
         """
-        for num in range(1,self.num_player+1):
-            self.players.append(self.create_one_player(num))
-
+        for num in range(1, self.num_player + 1):
+            self.players.append(self.create_one_player(num, self.players, self.empty_char))
 
 
     @staticmethod
-    def create_one_player(num: int) -> Player:
+    def create_one_player(num: int, players: List[Player], empty_char) -> Player:
         """
         get user input got name and piece
         return a player object
         """
-        player_names = [] # empty list of player names
-        pieces_list = []
+        player_names = [player.name for player in players]
+        pieces_list = [player.piece for player in players]
 
         while True:
             try:
-                name = input("Player {} enter your name: ".format(str(num)))
+                name = Game.get_name(num, player_names)
 
-                name = name.lower()
-                player_names.append(name) # append lower case name to list
+                piece = Game.get_valid_piece(num, pieces_list, empty_char)
 
-                if " " in name or name.isspace(): # what about empty string
-                    print("Your name cannot be the empty string or whitespace.")
+                new_player = Player(name, piece)
 
-                elif name in player_names:
-                    print("You cannot use {name} for your name as someone else is already using it.")
+                return new_player
 
-            except:
-                break
-
-        while True:
-            try:
-                piece = input("Player {} enter your piece: ".format(str(num)))
-
-                if " " in piece or piece.isspace():
-                    print("Your piece cannot be the empty string or whitespace")
-
-                if len(piece) == 1:
-                    print("{piece} is not a single character. Your piece can only be a single character.")
-
-                #if piece == board.empty_char
-                    print("Your piece cannot be the same as the blank character")
-
-                if piece in pieces_list: # save name and piece together to get name
-                    print("You cannot use {piece} for your piece as {name} is already using it")
-
-            except:
-                break
+            except ValueError as error:
+                print(error)
 
 
+    @staticmethod
+    def get_valid_piece(num, pieces_list, empty_char):
+
+        piece = input("Player {} enter your piece: ".format(str(num)))
+        piece = piece.strip()
+
+        if not piece:
+            raise ValueError("Your piece cannot be the empty string or whitespace")
+
+        elif len(piece) > 1:
+            raise ValueError("{piece} is not a single character. Your piece can only be a single character.")
+
+        elif piece == empty_char:
+            raise ValueError("Your piece cannot be the same as the blank character")
+
+        elif piece in pieces_list:  # save name and piece together to get name
+            raise ValueError("You cannot use {piece} for your piece as {name} is already using it")
+
+        else:
+            return piece
 
 
-        #name = input("Player {} enter your name: ".format(str(num)))
-        #piece = input("Player {} enter your piece: ".format(str(num)))
-        #return Player(name, piece)
+
+    @staticmethod
+    def get_name(num, player_names):
+
+        name = input("Player {} enter your name: ".format(str(num)))
+
+        name = name.lower()
+        name = name.strip()
+
+        if not name:  # if empty
+            raise ValueError("Your name cannot be the empty string or whitespace.")
+
+        elif name in player_names:
+            raise ValueError("You cannot use {name} for your name as someone else is already using it.")
+
+        else:
+            return name
+
+
+
+
 
 
 
