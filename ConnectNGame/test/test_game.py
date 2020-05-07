@@ -47,6 +47,11 @@ class TestGame(unittest.TestCase):
 
         self.assertFalse(Game.check_horizontal(6, 5, "x", 4, test_board_2))
 
+    def test_check_vertical_true(self):
+        pass
+
+    def test_check_vertical_false(self):
+        pass
 
 if __name__ == '__main__':
     unittest.main()

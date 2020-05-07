@@ -54,7 +54,7 @@ class Game(object):
         """
         if self.check_horizontal(self.num_rows, self.num_cols, player.piece, self.win_pieces, self.board.board_array):
             return True
-        elif self.check_vertical(player):  # FIXME
+        elif self.check_vertical(self.num_rows, self.num_cols, player.piece, self.win_pieces, self.board.board_array):
             return True
         elif self.check_diagonal(player):  # FIXME
             return True
@@ -62,7 +62,25 @@ class Game(object):
             return False
 
     @staticmethod
-    def check_horizontal(row_num, col_num, piece, win_pieces, board_array) -> bool:
+    def check_vertical(row_num, col_num, piece, win_pieces, board_array) -> bool:
+        for col in range(col_num):
+            for row in range(row_num - win_pieces + 1):
+                if board_array[row][col] == piece:
+                    num_connect = 1
+                    for num in range(1, win_pieces):
+                        if board_array[row + num][col] == piece:
+                            num_connect += 1
+                            if num_connect == win_pieces:
+                                return True
+                        else:
+                            break
+                else:
+                    continue
+            return False
+
+
+    @staticmethod
+    def check_horizontal(row_num, col_num, piece, win_pieces, board_array) -> bool:  # PASSES
 
         for row in range(row_num):
             for col in range(col_num - win_pieces + 1):
@@ -79,24 +97,6 @@ class Game(object):
                     continue
         return False
 
-    """
-    just sorting my thoughts out
-    
-    for each row:
-        for each item in row that could potentially form a win starting from the item:
-            if the starting item is equal to the player's piece:
-                for the next N-1 item in the row:
-                    if the item is equal to player's piece:
-                        check the next item (continue)
-                    else:
-                        stop checking this possible case of winning and go to the next item in the row (break)
-                if all next N-1 item is the same as the player's piece, the player as won (return True)
-            if not:
-                check the next item in the row (continue)
-    """
-
-    def check_vertical(self, player: player) -> bool:
-        pass
 
     def check_diagonal(self, player: Player) -> bool:
         pass
