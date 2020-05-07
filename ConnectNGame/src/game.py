@@ -67,14 +67,17 @@ class Game(object):
         for row in range(row_num):
             for col in range(col_num - win_pieces + 1):
                 if board_array[row][col] == piece:
+                    num_connect = 1
                     for num in range(1, win_pieces):
                         if board_array[row][col + num] == piece:
-                            continue
+                            num_connect += 1
+                            if num_connect == win_pieces:
+                                return True
                         else:
                             break
-                    return True
                 else:
                     continue
+        return False
 
     """
     just sorting my thoughts out
