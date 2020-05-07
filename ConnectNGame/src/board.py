@@ -30,24 +30,21 @@ class Board(object):
     def __str__(self) -> str:
         pass
 
-
-    def __repr__(self) -> str:
+    def __repr__(self) -> str: # represent Board
 
         i = "  " # empty space
         col_num = 0
         row_num = 0
-        for col in self.board_array: # go through list containing board info
+        for col in self.board_array[0]: # go through list containing board info
             i = i + str(col_num) + " "
             col_num = col_num + 1
 
         i = i[:-1] # removes last character
         i = i + "\n"
 
-
         for row in self.board_array:
             i = i + str(row_num)
             row_num = row_num + 1
-
 
             for item in row:
                 i = i + " " + str(item)
