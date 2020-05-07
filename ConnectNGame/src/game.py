@@ -65,18 +65,33 @@ class Game(object):
 
     @staticmethod
     def check_pos_diagonal(row_num, col_num, piece, win_pieces, board_array) -> bool:
+        """
+        check if there are a win case of positive sloped diagonal
+        """
         pass
 
-
     @staticmethod
-    def check_neg_diagonal(row_num, col_num, piece, win_pieces, board_array) -> bool:
+    def check_neg_diagonal(row_num, col_num, piece, win_pieces, board_array) -> bool:  # PASSES
+        """
+        check if there are a win case of negative sloped diagonal
+        """
         for row in range(row_num - win_pieces + 1):
             for col in range(col_num - win_pieces + 1):
                 if board_array[row][col] == piece:
-                    pass
+                    num_connect = 1
+                    for num in range(1, win_pieces):
+                        if board_array[row + num][col + num] == piece:
+                            num_connect += 1
+                            if num_connect == win_pieces:
+                                return True
+                        else:
+                            break
+                else:
+                    continue
+        return False
 
     @staticmethod
-    def check_vertical(row_num, col_num, piece, win_pieces, board_array) -> bool:
+    def check_vertical(row_num, col_num, piece, win_pieces, board_array) -> bool:  # PASSES
         for col in range(col_num):
             for row in range(row_num - win_pieces + 1):
                 if board_array[row][col] == piece:
