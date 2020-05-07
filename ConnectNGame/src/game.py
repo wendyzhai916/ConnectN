@@ -25,6 +25,7 @@ class Game(object):
         """
         self.create_board()
         self.create_players()
+        self.print_cur_board()
         while True:
             self.round_game()  # TODO: when does the game stops?
 
@@ -43,7 +44,7 @@ class Game(object):
         2) exit the program
         """
         if self.check_win(player):
-            print("{} won the game!".format(player.name))
+            print(f"{player.name} won the game!")
             exit()
 
     def check_win(self, player: Player) -> bool:
@@ -100,7 +101,8 @@ class Game(object):
 
     def check_diagonal(self, player: Player) -> bool:
         pass
-
+    
+       
     def drop_piece(self, player: Player):
         """
         1) ask for player input for col
@@ -113,47 +115,50 @@ class Game(object):
         while True:
 
             try:
-                col = int(input("{}, please enter the column you want to play in: ".format(player.name)))
+                col = int(input(f"{player.name}, please enter the column you want to play in: "))
 
                 if col >= self.board.col or col < 0:  # FIXME: col in the board class
-                    raise ValueError("That is not a valid column.")
-
-            except TypeError:
-                print("{}, column needs to be an integer. {} is not an integer. ".format(player.name, col))
-                continue
+                    raise ValueError(f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.")
+                    
+                else:
+                    break
 
             except ValueError:
+                print(f"{player.name}, column needs to be an integer. {col} is not an integer. ")
                 continue
-
-            else:
-                break
 
         self.board.drop(col, player.piece)
 
     def print_cur_board(self):
         print(repr(self.board))
-
+        
     def create_board(self):
 
         with open(self.configFile) as file:
             line = file.readline()
 
             while line:
-                if line.startswith("num_rows"):
-                    self.num_rows = int(line[-2])
 
-                elif line.startswith("num_cols"):
-                    self.num_cols = int(line[-2])
+                values = line.split(":")
+                values[0] = values[0].strip()
+                values[1] = values[1].strip()
 
-                elif line.startswith("blank_char"):
-                    self.empty_char = line[-2]
+                if values[0] == "num_rows":
+                    self.num_rows = int(values[1])
 
-                elif line.startswith("num_pieces_to_win"):
-                    self.win_pieces = int(line[-2])
+                elif values[0] == "num_cols":
+                    self.num_cols = int(values[1])
+
+                elif values[0] == "blank_char":
+                    self.empty_char = values[1]
+
+                elif values[0] == "num_pieces_to_win":
+                    self.win_pieces = values[1]
 
                 line = file.readline()
 
         self.board = Board(self.num_rows, self.num_cols, self.empty_char)
+
 
     def create_players(self):
         """
