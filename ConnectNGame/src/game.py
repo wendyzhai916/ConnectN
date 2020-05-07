@@ -61,8 +61,35 @@ class Game(object):
         else:
             return False
 
-    def check_horizontal(self, player):
-        pass
+    def check_horizontal(self, player) -> bool:  # TODO: test case for this asap bc this is hella sketchy
+
+        for row in range(self.num_rows):
+            for col in range(self.num_cols - self.win_pieces):
+                if self.board.board_array[row][col] == player.piece:
+                    for num in range(1, self.win_pieces):
+                        if self.board.board_array[row][col + num] == player.piece:
+                            continue
+                        else:
+                            break
+                    return True
+                else:
+                    continue
+
+    """
+    just sorting my thoughts out
+    
+    for each row:
+        for each item in row that could potentially form a win starting from the item:
+            if the starting item is equal to the player's piece:
+                for the next N-1 item in the row:
+                    if the item is equal to player's piece:
+                        check the next item (continue)
+                    else:
+                        stop checking this possible case of winning and go to the next item in the row (break)
+                if all next N-1 item is the same as the player's piece, the player as won (return True)
+            if not:
+                check the next item in the row (continue)
+    """
 
     def check_vertical(self, player):
         pass
@@ -190,4 +217,3 @@ class Game(object):
 
         else:
             return name
-
