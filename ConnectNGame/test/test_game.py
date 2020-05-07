@@ -48,10 +48,26 @@ class TestGame(unittest.TestCase):
         self.assertFalse(Game.check_horizontal(6, 5, "x", 4, test_board_2))
 
     def test_check_vertical_true(self):
-        pass
+        test_board_1 = [
+            ["x", "x", "o", "x"],
+            ["x", "x", "o", "x"],
+            ["x", "x", "o", "x"]
+        ]
+        self.assertTrue(Game.check_vertical(3, 4, "o", 3, test_board_1))
 
-    def test_check_vertical_false(self):
-        pass
+        test_board_2 = [
+            ["1", "1", "1", "1", "1"],
+            ["1", "x", "x", "1", "1"],
+            ["1", "x", "x", "1", "1"],
+            ["1", "x", "x", "1", "1"],
+            ["x", "1", "x", "1", "1"],
+            ["x", "1", "1", "1", "1"]
+        ]
+
+        self.assertTrue(Game.check_vertical(6, 5, "x", 4, test_board_2))
+
+    """def test_check_vertical_false(self):
+        pass"""
 
 if __name__ == '__main__':
     unittest.main()

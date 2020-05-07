@@ -2,7 +2,9 @@ from typing import List
 from .player import Player
 from .board import Board
 from . import player
-#from . import board
+
+
+# from . import board
 
 class Game(object):
 
@@ -18,15 +20,13 @@ class Game(object):
 
         self.play_game()
 
-
     def play_game(self):
         self.create_board()
         self.create_players()
         self.print_cur_board()
 
         while True:
-            self.round_game()  # TODO: when does the game stops?
-
+            self.round_game()
 
     def round_game(self):  # FIXME
         """
@@ -37,7 +37,6 @@ class Game(object):
             self.print_cur_board()
             self.check_end_game(player)
 
-
     def check_end_game(self, player):
         """
         1) print the winner's message
@@ -46,7 +45,6 @@ class Game(object):
         if self.check_win(player):
             print(f"{player.name} won the game!")
             exit()
-
 
     def check_win(self, player: Player) -> bool:
         """
@@ -58,11 +56,24 @@ class Game(object):
             return True
         elif self.check_vertical(self.num_rows, self.num_cols, player.piece, self.win_pieces, self.board.board_array):
             return True
-        elif self.check_diagonal(player):  # FIXME
+        elif self.check_pos_diagonal(self.num_rows, self.num_cols, player.piece, self.win_pieces, self.board.board_array):
+            return True
+        elif self.check_neg_diagonal(self.num_rows, self.num_cols, player.piece, self.win_pieces, self.board.board_array):
             return True
         else:
             return False
 
+    @staticmethod
+    def check_pos_diagonal(row_num, col_num, piece, win_pieces, board_array) -> bool:
+        pass
+
+
+    @staticmethod
+    def check_neg_diagonal(row_num, col_num, piece, win_pieces, board_array) -> bool:
+        for row in range(row_num - win_pieces + 1):
+            for col in range(col_num - win_pieces + 1):
+                if board_array[row][col] == piece:
+                    pass
 
     @staticmethod
     def check_vertical(row_num, col_num, piece, win_pieces, board_array) -> bool:
@@ -79,8 +90,7 @@ class Game(object):
                             break
                 else:
                     continue
-            return False
-
+        return False
 
     @staticmethod
     def check_horizontal(row_num, col_num, piece, win_pieces, board_array) -> bool:  # PASSES
@@ -100,10 +110,8 @@ class Game(object):
                     continue
         return False
 
-
     def check_diagonal(self, player):
         pass
-
 
     def drop_piece(self, player: Player):
 
@@ -114,28 +122,26 @@ class Game(object):
             try:
                 col = int(input(f"{player.name}, please enter the column you want to play in: "))
 
-                if col >= self.board.col or col < 0:  # FIXME: col in the board class
-                    raise ValueError(f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.") # not printing
+                if col >= self.board.col or col < 0:
+                    raise ValueError(
+                        f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.")  # not printing
 
                 else:
                     break
 
-                #elif  column not full
+                # elif  column not full
 
-            #except TypeError:
-                #print("{}, column needs to be an integer. {} is not an integer. ".format(name, col))
-                #continue
+            # except TypeError:
+            # print("{}, column needs to be an integer. {} is not an integer. ".format(name, col))
+            # continue
 
             except ValueError:
                 print(f"{player.name}, column needs to be an integer. {col} is not an integer.")
 
-
         self.board.drop(col, player.piece)
-
 
     def print_cur_board(self):
         print(repr(self.board))
-
 
     def create_board(self):
 
@@ -164,15 +170,12 @@ class Game(object):
 
         self.board = Board(self.num_rows, self.num_cols, self.empty_char)
 
-
     def create_players(self):
         """
         get num_player amount of players appended into the players list
         """
-        for num in range(1,self.num_player+1):
+        for num in range(1, self.num_player + 1):
             self.players.append(self.create_one_player(num, self.players, self.empty_char))
-
-
 
     @staticmethod
     def create_one_player(num: int, players: List[Player], empty_char) -> Player:
@@ -197,7 +200,6 @@ class Game(object):
             except ValueError as error:
                 print(error)
 
-
     @staticmethod
     def get_valid_piece(num, pieces_list, empty_char):
 
@@ -219,8 +221,6 @@ class Game(object):
         else:
             return piece
 
-
-
     @staticmethod
     def get_name(num, player_names):
 
@@ -233,11 +233,8 @@ class Game(object):
         if not name:  # if empty
             raise ValueError(f"Your name cannot be the empty string or whitespace.")
 
-
         elif name in player_names:
             raise ValueError(f"You cannot use {name} for your name as someone else is already using it.")
 
         else:
             return corr_name
-        
-        
