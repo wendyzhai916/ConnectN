@@ -3,7 +3,6 @@ from typing import List
 class Board(object):
 
     def __init__(self, row: int, col: int, char: str) -> None:
-        #self.name = name
         self.row = row
         self.col = col
         self.empty_char = char
@@ -30,10 +29,9 @@ class Board(object):
 
     def __str__(self) -> str:
         pass
-        #return self.name
 
 
-    def __repr__(self) -> str: # represent Board
+    def __repr__(self) -> str:
 
         i = "  " # empty space
         col_num = 0
@@ -60,7 +58,7 @@ class Board(object):
         return i
 
 
-    def drop(self, col, letter): # drops character into board
+    def drop(self, col, letter): # drop character into board
 
         top = 0
         row_num = 0
@@ -69,5 +67,3 @@ class Board(object):
                 top = row_num
             row_num = row_num + 1
         self.board_array[top][col] = letter
-
-        
