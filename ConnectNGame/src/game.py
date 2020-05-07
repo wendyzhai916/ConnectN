@@ -33,11 +33,11 @@ class Game(object):
         one round of game
         """
         for player in self.players:
-            self.drop_piece(player.name)
+            self.drop_piece(player)
             self.print_cur_board()
             self.check_end_game(player)
 
-    def check_end_game(self, player):
+    def check_end_game(self, player: Player):
         """
         1) print the winner's message
         2) exit the program
@@ -46,28 +46,29 @@ class Game(object):
             print("{} won the game!".format(player.name))
             exit()
 
-    def check_win(self, player) -> bool:
+    def check_win(self, player: Player) -> bool:
         """
         1) check if the winner had N connected horizontally
         2) check if the winner had N connected vertically
         3) check if the winner had N connected diagonally
         """
-        if self.check_horizontal(player):
+        if self.check_horizontal(self.num_rows, self.num_cols, player.piece, self.win_pieces, self.board.board_array):
             return True
-        elif self.check_vertical(player):
+        elif self.check_vertical(player):  # FIXME
             return True
-        elif self.check_diagonal(player):
+        elif self.check_diagonal(player):  # FIXME
             return True
         else:
             return False
 
-    def check_horizontal(self, player) -> bool:  # TODO: test case for this asap bc this is hella sketchy
+    @staticmethod
+    def check_horizontal(row_num, col_num, piece, win_pieces, board_array) -> bool:
 
-        for row in range(self.num_rows):
-            for col in range(self.num_cols - self.win_pieces):
-                if self.board.board_array[row][col] == player.piece:
-                    for num in range(1, self.win_pieces):
-                        if self.board.board_array[row][col + num] == player.piece:
+        for row in range(row_num):
+            for col in range(col_num - win_pieces + 1):
+                if board_array[row][col] == piece:
+                    for num in range(1, win_pieces):
+                        if board_array[row][col + num] == piece:
                             continue
                         else:
                             break
@@ -91,13 +92,13 @@ class Game(object):
                 check the next item in the row (continue)
     """
 
-    def check_vertical(self, player):
+    def check_vertical(self, player: player) -> bool:
         pass
 
-    def check_diagonal(self, player):
+    def check_diagonal(self, player: Player) -> bool:
         pass
 
-    def drop_piece(self, name: str):
+    def drop_piece(self, player: Player):
         """
         1) ask for player input for col
         2) if the input is not int, raise TypeError
@@ -109,13 +110,13 @@ class Game(object):
         while True:
 
             try:
-                col = int(input("{}, please enter the column you want to play in: ".format(name)))
+                col = int(input("{}, please enter the column you want to play in: ".format(player.name)))
 
                 if col >= self.board.col or col < 0:  # FIXME: col in the board class
                     raise ValueError("That is not a valid column.")
 
             except TypeError:
-                print("{}, column needs to be an integer. {} is not an integer. ".format(name, col))
+                print("{}, column needs to be an integer. {} is not an integer. ".format(player.name, col))
                 continue
 
             except ValueError:
@@ -124,7 +125,7 @@ class Game(object):
             else:
                 break
 
-        self.board.drop(col, )
+        self.board.drop(col, player.piece)
 
     def print_cur_board(self):
         print(repr(self.board))
@@ -181,7 +182,7 @@ class Game(object):
                 print(error)
 
     @staticmethod
-    def get_valid_piece(num, pieces_list, empty_char):
+    def get_valid_piece(num: int, pieces_list: List[str], empty_char: str) -> str:
 
         piece = input("Player {} enter your piece: ".format(str(num)))
         piece = piece.strip()
