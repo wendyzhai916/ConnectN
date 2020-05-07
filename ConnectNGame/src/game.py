@@ -35,6 +35,40 @@ class Game(object):
         for player in self.players:
             self.drop_piece(player.name)
             self.print_cur_board()
+            self.check_end_game(player)
+
+    def check_end_game(self, player):
+        """
+        1) print the winner's message
+        2) exit the program
+        """
+        if self.check_win(player):
+            print("{} won the game!".format(player.name))
+            exit()
+
+    def check_win(self, player) -> bool:
+        """
+        1) check if the winner had N connected horizontally
+        2) check if the winner had N connected vertically
+        3) check if the winner had N connected diagonally
+        """
+        if self.check_horizontal(player):
+            return True
+        elif self.check_vertical(player):
+            return True
+        elif self.check_diagonal(player):
+            return True
+        else:
+            return False
+
+    def check_horizontal(self, player):
+        pass
+
+    def check_vertical(self, player):
+        pass
+
+    def check_diagonal(self, player):
+        pass
 
     def drop_piece(self, name: str):
         """
@@ -63,12 +97,10 @@ class Game(object):
             else:
                 break
 
-        self.board.drop(col,)
-
+        self.board.drop(col, )
 
     def print_cur_board(self):
         print(repr(self.board))
-
 
     def create_board(self):
 
@@ -90,8 +122,7 @@ class Game(object):
 
                 line = file.readline()
 
-        self.board = Board(self.num_rows ,self.num_cols ,self.empty_char)
-
+        self.board = Board(self.num_rows, self.num_cols, self.empty_char)
 
     def create_players(self):
         """
@@ -99,7 +130,6 @@ class Game(object):
         """
         for num in range(1, self.num_player + 1):
             self.players.append(self.create_one_player(num, self.players, self.empty_char))
-
 
     @staticmethod
     def create_one_player(num: int, players: List[Player], empty_char) -> Player:
@@ -123,7 +153,6 @@ class Game(object):
             except ValueError as error:
                 print(error)
 
-
     @staticmethod
     def get_valid_piece(num, pieces_list, empty_char):
 
@@ -145,8 +174,6 @@ class Game(object):
         else:
             return piece
 
-
-
     @staticmethod
     def get_name(num, player_names):
 
@@ -163,11 +190,4 @@ class Game(object):
 
         else:
             return name
-
-
-
-
-
-
-
 
