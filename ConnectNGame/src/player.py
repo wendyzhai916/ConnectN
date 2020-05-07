@@ -9,18 +9,19 @@ class Player(object):
 
 
     @staticmethod
-    def create_one_player(num: int, players: List["Player"], empty_char) -> "Player":
+    def create_one_player(num: int, players: List["Player"], empty_char: str) -> "Player":
         """
         get user input got name and piece
         return a player object
         """
+
         player_names = [player.name for player in players]
         pieces_list = [player.piece for player in players]
 
         while True:
 
             try:
-                name = Player.get_name(num, player_names, players)
+                name = Player.get_name(num, players)
 
                 piece = Player.get_valid_piece(num, empty_char, players)
 
@@ -33,7 +34,7 @@ class Player(object):
 
 
     @staticmethod
-    def get_valid_piece(num, empty_char, players: List["Player"]):
+    def get_valid_piece(num: int, empty_char: str, players: List["Player"]):
 
         piece = input(f"Player {num} enter your piece: ")
         piece = piece.strip()
@@ -55,9 +56,8 @@ class Player(object):
             return piece
 
 
-
     @staticmethod
-    def get_name(num, player_names, players):
+    def get_name(num: int, players: List["Player"]):
 
         name = input(f"Player {num} enter your name: ")
 
@@ -72,7 +72,4 @@ class Player(object):
 
         else:
             return name
-
-
-
 
