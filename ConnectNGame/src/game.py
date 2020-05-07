@@ -2,14 +2,13 @@ from typing import List
 from .player import Player
 from .board import Board
 from . import player
-from . import board
-
+#from . import board
 
 class Game(object):
 
     def __init__(self, file_name):
         self.num_player = 2
-        self.players: List[Player] = []
+        self.players: List[player.Player] = []
         self.board: Board = None
         self.configFile = file_name
         self.empty_char = None
@@ -19,15 +18,15 @@ class Game(object):
 
         self.play_game()
 
+
     def play_game(self):
-        """
-        the main method basically
-        """
         self.create_board()
         self.create_players()
         self.print_cur_board()
+
         while True:
             self.round_game()  # TODO: when does the game stops?
+
 
     def round_game(self):  # FIXME
         """
@@ -38,7 +37,8 @@ class Game(object):
             self.print_cur_board()
             self.check_end_game(player)
 
-    def check_end_game(self, player: Player):
+
+    def check_end_game(self, player):
         """
         1) print the winner's message
         2) exit the program
@@ -46,6 +46,7 @@ class Game(object):
         if self.check_win(player):
             print(f"{player.name} won the game!")
             exit()
+
 
     def check_win(self, player: Player) -> bool:
         """
@@ -61,6 +62,7 @@ class Game(object):
             return True
         else:
             return False
+
 
     @staticmethod
     def check_vertical(row_num, col_num, piece, win_pieces, board_array) -> bool:
@@ -99,17 +101,12 @@ class Game(object):
         return False
 
 
-    def check_diagonal(self, player: Player) -> bool:
+    def check_diagonal(self, player):
         pass
-    
-       
+
+
     def drop_piece(self, player: Player):
-        """
-        1) ask for player input for col
-        2) if the input is not int, raise TypeError
-        3) if the input is not a valid col, raise ValueError
-        4) use the input in the drop method (in board class) to modify the board
-        """
+
         col = None
 
         while True:
@@ -118,20 +115,28 @@ class Game(object):
                 col = int(input(f"{player.name}, please enter the column you want to play in: "))
 
                 if col >= self.board.col or col < 0:  # FIXME: col in the board class
-                    raise ValueError(f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.")
-                    
+                    raise ValueError(f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.") # not printing
+
                 else:
                     break
 
+                #elif  column not full
+
+            #except TypeError:
+                #print("{}, column needs to be an integer. {} is not an integer. ".format(name, col))
+                #continue
+
             except ValueError:
-                print(f"{player.name}, column needs to be an integer. {col} is not an integer. ")
-                continue
+                print(f"{player.name}, column needs to be an integer. {col} is not an integer.")
+
 
         self.board.drop(col, player.piece)
 
+
     def print_cur_board(self):
         print(repr(self.board))
-        
+
+
     def create_board(self):
 
         with open(self.configFile) as file:
@@ -153,7 +158,7 @@ class Game(object):
                     self.empty_char = values[1]
 
                 elif values[0] == "num_pieces_to_win":
-                    self.win_pieces = values[1]
+                    self.win_pieces = int(values[1])
 
                 line = file.readline()
 
@@ -164,8 +169,10 @@ class Game(object):
         """
         get num_player amount of players appended into the players list
         """
-        for num in range(1, self.num_player + 1):
+        for num in range(1,self.num_player+1):
             self.players.append(self.create_one_player(num, self.players, self.empty_char))
+
+
 
     @staticmethod
     def create_one_player(num: int, players: List[Player], empty_char) -> Player:
@@ -177,52 +184,60 @@ class Game(object):
         pieces_list = [player.piece for player in players]
 
         while True:
+
             try:
-                name = Game.get_name(num, player_names)
+                corr_name = Game.get_name(num, player_names)
 
                 piece = Game.get_valid_piece(num, pieces_list, empty_char)
 
-                new_player = Player(name, piece)
+                new_player = Player(corr_name, piece)
 
                 return new_player
 
             except ValueError as error:
                 print(error)
 
-    @staticmethod
-    def get_valid_piece(num: int, pieces_list: List[str], empty_char: str) -> str:
 
-        piece = input("Player {} enter your piece: ".format(str(num)))
+    @staticmethod
+    def get_valid_piece(num, pieces_list, empty_char):
+
+        piece = input(f"Player {num} enter your piece: ")
         piece = piece.strip()
 
         if not piece:
             raise ValueError("Your piece cannot be the empty string or whitespace")
 
         elif len(piece) > 1:
-            raise ValueError("{piece} is not a single character. Your piece can only be a single character.")
+            raise ValueError(f"{piece} is not a single character. Your piece can only be a single character.")
 
         elif piece == empty_char:
             raise ValueError("Your piece cannot be the same as the blank character")
 
         elif piece in pieces_list:  # save name and piece together to get name
-            raise ValueError("You cannot use {piece} for your piece as {name} is already using it")
+            raise ValueError(f"You cannot use {piece} for your piece as {player.name} is already using it")
 
         else:
             return piece
 
+
+
     @staticmethod
     def get_name(num, player_names):
 
-        name = input("Player {} enter your name: ".format(str(num)))
+        name = input(f"Player {num} enter your name: ")
+        corr_name = name
 
         name = name.lower()
         name = name.strip()
 
         if not name:  # if empty
-            raise ValueError("Your name cannot be the empty string or whitespace.")
+            raise ValueError(f"Your name cannot be the empty string or whitespace.")
+
 
         elif name in player_names:
-            raise ValueError("You cannot use {name} for your name as someone else is already using it.")
+            raise ValueError(f"You cannot use {name} for your name as someone else is already using it.")
 
         else:
-            return name
+            return corr_name
+        
+        
