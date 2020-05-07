@@ -175,6 +175,6 @@ class Game(object):
         get num_player amount of players appended into the players list
         """
         for num in range(1, self.num_player + 1):
-            self.players.append(self.create_one_player(num, self.players, self.empty_char))
+            self.players.append(Player.create_one_player(num, self.players, self.empty_char))
 
     
