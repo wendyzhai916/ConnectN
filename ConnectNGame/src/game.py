@@ -5,19 +5,18 @@ from . import player
 from . import board
 
 class Game(object):
-
-    def __init__(self, file_name: str):
-        self.num_player = 2
+    
+    def __init__(self, file_name: str) -> None:
+        self.num_player: int = 2
         self.players: List[player.Player] = []
-        self.board: Board = None
-        self.configFile = file_name
-        self.empty_char = None
-        self.num_rows = None
-        self.num_cols = None
-        self.win_pieces = None
+        self.board: Board # = None
+        self.configFile: str = file_name
+        self.empty_char: str  # = None
+        self.num_rows: int # = None
+        self.num_cols: int # = None
+        self.win_pieces: int # = None
 
         self.play_game()
-
 
     def play_game(self) -> None:
         self.create_board()
