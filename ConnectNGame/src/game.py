@@ -2,13 +2,11 @@ from typing import List
 from .player import Player
 from .board import Board
 from . import player
-
-
-# from . import board
+from . import board
 
 class Game(object):
 
-    def __init__(self, file_name):
+    def __init__(self, file_name: str):
         self.num_player = 2
         self.players: List[player.Player] = []
         self.board: Board = None
@@ -20,7 +18,8 @@ class Game(object):
 
         self.play_game()
 
-    def play_game(self):
+
+    def play_game(self) -> None:
         self.create_board()
         self.create_players()
         self.print_cur_board()
@@ -28,7 +27,8 @@ class Game(object):
         while True:
             self.round_game()
 
-    def round_game(self):  # FIXME
+
+    def round_game(self) -> None:
         """
         one round of game
         """
@@ -37,7 +37,8 @@ class Game(object):
             self.print_cur_board()
             self.check_end_game(player)
 
-    def check_end_game(self, player):
+
+    def check_end_game(self, player: Player) -> None:
         """
         1) print the winner's message
         2) exit the program
@@ -45,6 +46,7 @@ class Game(object):
         if self.check_win(player):
             print(f"{player.name} won the game!")
             exit()
+
 
     def check_win(self, player: Player) -> bool:
         """
@@ -56,15 +58,18 @@ class Game(object):
             return True
         elif self.check_vertical(self.num_rows, self.num_cols, player.piece, self.win_pieces, self.board.board_array):
             return True
-        elif self.check_pos_diagonal(self.num_rows, self.num_cols, player.piece, self.win_pieces, self.board.board_array):
+        elif self.check_pos_diagonal(self.num_rows, self.num_cols, player.piece, self.win_pieces,
+                                     self.board.board_array):
             return True
-        elif self.check_neg_diagonal(self.num_rows, self.num_cols, player.piece, self.win_pieces, self.board.board_array):
+        elif self.check_neg_diagonal(self.num_rows, self.num_cols, player.piece, self.win_pieces,
+                                     self.board.board_array):
             return True
         else:
             return False
 
+
     @staticmethod
-    def check_pos_diagonal(row_num, col_num, piece, win_pieces, board_array) -> bool:  # PASSES
+    def check_pos_diagonal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
         """
         check if there are a win case of positive sloped diagonal
         """
@@ -84,10 +89,8 @@ class Game(object):
         return False
 
 
-
-
     @staticmethod
-    def check_neg_diagonal(row_num, col_num, piece, win_pieces, board_array) -> bool:  # PASSES
+    def check_neg_diagonal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
         """
         check if there are a win case of negative sloped diagonal
         """
@@ -106,8 +109,9 @@ class Game(object):
                     continue
         return False
 
+
     @staticmethod
-    def check_vertical(row_num, col_num, piece, win_pieces, board_array) -> bool:  # PASSES
+    def check_vertical(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
         for col in range(col_num):
             for row in range(row_num - win_pieces + 1):
                 if board_array[row][col] == piece:
@@ -123,8 +127,9 @@ class Game(object):
                     continue
         return False
 
+
     @staticmethod
-    def check_horizontal(row_num, col_num, piece, win_pieces, board_array) -> bool:  # PASSES
+    def check_horizontal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
 
         for row in range(row_num):
             for col in range(col_num - win_pieces + 1):
@@ -141,10 +146,12 @@ class Game(object):
                     continue
         return False
 
-    def check_diagonal(self, player):
-        pass
 
-    def drop_piece(self, player: Player):
+    #def check_diagonal(self, player):
+        #pass
+
+
+    def drop_piece(self, player: Player) -> None:
 
         while True:
             col = input(f"{player.name}, please enter the column you want to play in: ")
@@ -157,8 +164,8 @@ class Game(object):
 
             else:
                 if col >= self.board.col or col < 0:
-                    print(f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.")  
-                    
+                    print(f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.")
+
                 elif self.board.board_array[0][col] != self.empty_char:
                     print(f"You cannot play in {col} because it is full.")
 
@@ -167,10 +174,12 @@ class Game(object):
 
         self.board.drop(col, player.piece)
 
-    def print_cur_board(self):
+
+    def print_cur_board(self) -> None:
         print(repr(self.board))
 
-    def create_board(self):
+
+    def create_board(self) -> None:
 
         with open(self.configFile) as file:
             line = file.readline()
@@ -197,11 +206,11 @@ class Game(object):
 
         self.board = Board(self.num_rows, self.num_cols, self.empty_char)
 
-    def create_players(self):
+
+    def create_players(self) -> None:
         """
         get num_player amount of players appended into the players list
         """
-        for num in range(1, self.num_player + 1):
+        for num in range(1, self.num_player+1):
             self.players.append(Player.create_one_player(num, self.players, self.empty_char))
 
-    
