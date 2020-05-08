@@ -23,12 +23,13 @@ class Board(object):
         self.board_array[row][col] = char
 
 
-    def __eq__(self, other) -> bool:
-        pass
+    #def __eq__(self) -> bool:
+        #pass
 
 
-    def __str__(self) -> str:
-        pass
+    #def __str__(self) -> str:
+        #pass
+
 
     def __repr__(self) -> str: # represent Board
 
@@ -55,7 +56,7 @@ class Board(object):
         return i
 
 
-    def drop(self, col, letter): # drop character into board
+    def drop(self, col: int, letter: str) -> None: # drop character into board
 
         top = 0
         row_num = 0
@@ -64,3 +65,4 @@ class Board(object):
                 top = row_num
             row_num = row_num + 1
         self.board_array[top][col] = letter
+
