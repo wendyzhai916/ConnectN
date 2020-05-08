@@ -153,7 +153,7 @@ class Game(object):
     def drop_piece(self, player: Player) -> None:
 
         while True:
-            col = input(f"{player.name}, please enter the column you want to play in: ")
+            col: int = input(f"{player.name}, please enter the column you want to play in: ")
 
             try:
                 col = int(col)
