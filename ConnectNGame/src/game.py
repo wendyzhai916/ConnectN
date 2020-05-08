@@ -146,28 +146,24 @@ class Game(object):
 
     def drop_piece(self, player: Player):
 
-        col = None
-
         while True:
+            col = input(f"{player.name}, please enter the column you want to play in: ")
 
             try:
-                col = int(input(f"{player.name}, please enter the column you want to play in: "))
-
-                if col >= self.board.col or col < 0:
-                    raise ValueError(
-                        f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.")  # not printing
-
-                else:
-                    break
-
-                # elif  column not full
-
-            # except TypeError:
-            # print("{}, column needs to be an integer. {} is not an integer. ".format(name, col))
-            # continue
+                col = int(col)
 
             except ValueError:
                 print(f"{player.name}, column needs to be an integer. {col} is not an integer.")
+
+            else:
+                if col >= self.board.col or col < 0:
+                    print(f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.")  
+                    
+                elif self.board.board_array[0][col] == player.piece: # TODO: NOT WORKING
+                    print(f"You cannot play in {col} because it is full.")
+
+                else:
+                    break
 
         self.board.drop(col, player.piece)
 
