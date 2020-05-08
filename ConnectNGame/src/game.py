@@ -85,7 +85,7 @@ class Game(object):
         check if there are a win case of positive sloped diagonal
         """
         for row in range(row_num - win_pieces + 1):
-            for col in range(col_num - win_pieces, col_num):
+            for col in range(win_pieces-1, col_num):
                 if board_array[row][col] == piece:
                     num_connect = 1
                     for num in range(1, win_pieces):
