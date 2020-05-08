@@ -3,7 +3,7 @@ from typing import List
 
 class Player(object):
 
-    def __init__(self, name, piece):
+    def __init__(self, name: str, piece: str):
         self.name = name
         self.piece = piece
 
@@ -34,7 +34,7 @@ class Player(object):
 
 
     @staticmethod
-    def get_valid_piece(num: int, empty_char: str, players: List["Player"]):
+    def get_valid_piece(num: int, empty_char: str, players: List["Player"]) -> str:
 
         piece = input(f"Player {num} enter your piece: ")
         piece = piece.strip()
@@ -57,7 +57,7 @@ class Player(object):
 
 
     @staticmethod
-    def get_name(num: int, players: List["Player"]):
+    def get_name(num: int, players: List["Player"]) -> str:
 
         name = input(f"Player {num} enter your name: ")
 
