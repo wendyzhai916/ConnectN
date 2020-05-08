@@ -37,6 +37,14 @@ class Game(object):
             self.check_end_game(player)
 
 
+    @staticmethod
+    def check_tie(board_array: List, empty_char: str) -> bool: # PASSES
+        board_array = board_array
+        for item in board_array[0]:
+            if item == empty_char:
+                return False
+        return True
+
     def check_end_game(self, player: Player) -> None:
         """
         1) print the winner's message
@@ -44,6 +52,10 @@ class Game(object):
         """
         if self.check_win(player):
             print(f"{player.name} won the game!")
+            exit()
+
+        if self.check_tie(self.board.board_array, self.empty_char):
+            print("Tie Game.")
             exit()
 
 
