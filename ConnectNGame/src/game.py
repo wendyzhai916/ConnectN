@@ -159,7 +159,7 @@ class Game(object):
                 if col >= self.board.col or col < 0:
                     print(f"Your column needs to be between 0 and {self.num_cols - 1} but it is actually {col}.")  
                     
-                elif self.board.board_array[0][col] == player.piece: # TODO: NOT WORKING
+                elif self.board.board_array[0][col] != self.empty_char:
                     print(f"You cannot play in {col} because it is full.")
 
                 else:
