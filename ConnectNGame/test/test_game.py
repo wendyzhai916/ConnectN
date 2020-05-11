@@ -145,7 +145,6 @@ class TestGame(unittest.TestCase):
 
     def test_check_neg_diagonal_true(self):
 
-
         test_board_1 = [
             ["x", "o", "x", "x"],
             ["x", "x", "o", "x"],

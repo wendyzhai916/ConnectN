@@ -14,22 +14,11 @@ class Board(object):
                 cur_row.append(self.empty_char)
             self.board_array.append(cur_row)
 
-
     def clear_spot(self, char: str, row: int, col: int) -> None:
         self.board_array[row][col] = char
 
-
     def fill(self, char: str, row: int, col: int) -> None:
         self.board_array[row][col] = char
-
-
-    #def __eq__(self) -> bool:
-        #pass
-
-
-    #def __str__(self) -> str:
-        #pass
-
 
     def __repr__(self) -> str: # represent Board
 
@@ -54,7 +43,6 @@ class Board(object):
 
         i = i.rstrip()
         return i
-
 
     def drop(self, col: int, letter: str) -> None: # drop character into board
 

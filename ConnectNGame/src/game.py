@@ -4,17 +4,18 @@ from .board import Board
 from . import player
 from . import board
 
+
 class Game(object):
-    
+
     def __init__(self, file_name: str) -> None:
         self.num_player: int = 2
         self.players: List[player.Player] = []
-        self.board: Board # = None
+        self.board: Board  # = None
         self.configFile: str = file_name
         self.empty_char: str  # = None
-        self.num_rows: int # = None
-        self.num_cols: int # = None
-        self.win_pieces: int # = None
+        self.num_rows: int  # = None
+        self.num_cols: int  # = None
+        self.win_pieces: int  # = None
 
         self.play_game()
 
@@ -26,7 +27,6 @@ class Game(object):
         while True:
             self.round_game()
 
-
     def round_game(self) -> None:
         """
         one round of game
@@ -36,9 +36,8 @@ class Game(object):
             self.print_cur_board()
             self.check_end_game(player)
 
-
     @staticmethod
-    def check_tie(board_array: List, empty_char: str) -> bool: # PASSES
+    def check_tie(board_array: List, empty_char: str) -> bool:  # PASSES
         board_array = board_array
         for item in board_array[0]:
             if item == empty_char:
@@ -57,7 +56,6 @@ class Game(object):
         if self.check_tie(self.board.board_array, self.empty_char):
             print("Tie Game.")
             exit()
-
 
     def check_win(self, player: Player) -> bool:
         """
@@ -78,14 +76,13 @@ class Game(object):
         else:
             return False
 
-
     @staticmethod
     def check_pos_diagonal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
         """
         check if there are a win case of positive sloped diagonal
         """
         for row in range(row_num - win_pieces + 1):
-            for col in range(win_pieces-1, col_num):
+            for col in range(win_pieces - 1, col_num):
                 if board_array[row][col] == piece:
                     num_connect = 1
                     for num in range(1, win_pieces):
@@ -98,7 +95,6 @@ class Game(object):
                 else:
                     continue
         return False
-
 
     @staticmethod
     def check_neg_diagonal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
@@ -120,7 +116,6 @@ class Game(object):
                     continue
         return False
 
-
     @staticmethod
     def check_vertical(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
         for col in range(col_num):
@@ -137,7 +132,6 @@ class Game(object):
                 else:
                     continue
         return False
-
 
     @staticmethod
     def check_horizontal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
@@ -157,10 +151,8 @@ class Game(object):
                     continue
         return False
 
-
-    #def check_diagonal(self, player):
-        #pass
-
+    # def check_diagonal(self, player):
+    # pass
 
     def drop_piece(self, player: Player) -> None:
 
@@ -185,10 +177,8 @@ class Game(object):
 
         self.board.drop(col, player.piece)
 
-
     def print_cur_board(self) -> None:
         print(repr(self.board))
-
 
     def create_board(self) -> None:
 
@@ -217,11 +207,9 @@ class Game(object):
 
         self.board = Board(self.num_rows, self.num_cols, self.empty_char)
 
-
     def create_players(self) -> None:
         """
         get num_player amount of players appended into the players list
         """
-        for num in range(1, self.num_player+1):
+        for num in range(1, self.num_player + 1):
             self.players.append(Player.create_one_player(num, self.players, self.empty_char))
-
