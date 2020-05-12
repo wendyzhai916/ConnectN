@@ -1,5 +1,6 @@
 from typing import List
 
+
 class Board(object):
 
     def __init__(self, row: int, col: int, char: str) -> None:
@@ -14,22 +15,16 @@ class Board(object):
                 cur_row.append(self.empty_char)
             self.board_array.append(cur_row)
 
-    def clear_spot(self, char: str, row: int, col: int) -> None:
-        self.board_array[row][col] = char
-
-    def fill(self, char: str, row: int, col: int) -> None:
-        self.board_array[row][col] = char
-
-    def __repr__(self) -> str: # represent Board
+    def __repr__(self) -> str:  # represent Board  # passes
 
         i = "  " # empty space
         col_num = 0
         row_num = 0
-        for col in self.board_array[0]: # go through list containing board info
+        for col in self.board_array[0]:  # go through list containing board info
             i = i + str(col_num) + " "
             col_num = col_num + 1
 
-        i = i[:-1] # removes last character
+        i = i[:-1]  # removes last character
         i = i + "\n"
 
         for row in self.board_array:
@@ -44,7 +39,7 @@ class Board(object):
         i = i.rstrip()
         return i
 
-    def drop(self, col: int, letter: str) -> None: # drop character into board
+    def drop(self, col: int, letter: str) -> None:  # drop character into board  # passes
 
         top = 0
         row_num = 0

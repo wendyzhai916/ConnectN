@@ -57,7 +57,7 @@ class Game(object):
             print("Tie Game.")
             exit()
 
-    def check_win(self, player: Player) -> bool:
+    def check_win(self, player: Player) -> bool:  # Passes since all check methods passes
         """
         1) check if the winner had N connected horizontally
         2) check if the winner had N connected vertically
@@ -77,7 +77,7 @@ class Game(object):
             return False
 
     @staticmethod
-    def check_pos_diagonal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
+    def check_pos_diagonal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:  #passes
         """
         check if there are a win case of positive sloped diagonal
         """
@@ -97,7 +97,7 @@ class Game(object):
         return False
 
     @staticmethod
-    def check_neg_diagonal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
+    def check_neg_diagonal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:  #passes
         """
         check if there are a win case of negative sloped diagonal
         """
@@ -117,7 +117,7 @@ class Game(object):
         return False
 
     @staticmethod
-    def check_vertical(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
+    def check_vertical(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:  #passes
         for col in range(col_num):
             for row in range(row_num - win_pieces + 1):
                 if board_array[row][col] == piece:
@@ -134,7 +134,7 @@ class Game(object):
         return False
 
     @staticmethod
-    def check_horizontal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:
+    def check_horizontal(row_num: int, col_num: int, piece: str, win_pieces: int, board_array: List) -> bool:  #passes
 
         for row in range(row_num):
             for col in range(col_num - win_pieces + 1):
@@ -154,7 +154,7 @@ class Game(object):
     # def check_diagonal(self, player):
     # pass
 
-    def drop_piece(self, player: Player) -> None:
+    def drop_piece(self, player: Player) -> None:  # test for error   # passes if the drop method in board passes
 
         while True:
             col: int = input(f"{player.name}, please enter the column you want to play in: ")
@@ -177,7 +177,7 @@ class Game(object):
 
         self.board.drop(col, player.piece)
 
-    def print_cur_board(self) -> None:
+    def print_cur_board(self) -> None:  # works if the repr method in board class passes
         print(repr(self.board))
 
     def create_board(self) -> None:
